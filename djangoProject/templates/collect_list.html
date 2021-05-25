@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <a></a>
+    <div class="b" align="center">
+    <div>
+    <table border="4">
+        <tr>
+            <td>商品名 </td>
+            <td>商品图片</td>
+            <td></td>
+            </tr>
+        {% for foo in b %}
+            <tr>
+            <td>{{ foo.good_name }}</td>
+            <td>{{ foo.good_id }}</td>
+            <td><img src = "../../../{{ foo.good_picture }}" alt="" style="height: 60px;width: 60px"></td>
+            </tr>
+        {% endfor %}
+    </table>
+    </div>
+    </div>
+</body>
+</html>

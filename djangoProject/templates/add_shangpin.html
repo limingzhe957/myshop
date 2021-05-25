@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>积分商城-添加分类</title>
+</head>
+<body>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <br>商品名：<input type="text" name="name"/></br>
+    商品简介：<input type="text" name="introduce"/></br>
+    商品价格：<input type="number" name="price"/></br>
+    商品数量：<input type="number" name="num"/></br>
+    商品图片：<input type="file" name="img"/></br>
+    <input type="submit" value="提交" name=""></br>
+</form>
+
+
+
+</body>
+</html>

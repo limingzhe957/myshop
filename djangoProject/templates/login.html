@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+    .center {
+        margin: auto;
+        width:30%;
+        padding: 10px;
+
+    }
+    </style>
+</head>
+<body>
+	<div class="center">
+					<h1 class="center">用户登录</h1>
+					<a href="register">立即注册</a>
+				<div class="form_input">
+					<form method="post">
+                {% csrf_token %}
+                        <ul style="list-style-type: none;" > <!--去掉实心点-->
+					    <li>
+						<label>用户名：</label>
+						<input type="text" name="username" class="name_input" placeholder="请输入用户名">
+					    </li>
+					    <li>
+						<label> 密  码：</label>
+						<input type="password" name="pwd" class="pwd_input" placeholder="请输入密码">
+					    </li>
+						<div>
+                            <input type="submit" name="" value="登录" class="input_submit">
+                            <a href="#">忘记密码</a>
+						</div>
+
+                        </ul>
+					</form>
+
+
+
+                    {{ errmsg }}
+				</div>
+			</div>
+
+
+</body>
+</html>

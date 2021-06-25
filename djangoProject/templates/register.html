@@ -16,7 +16,7 @@
 <div class="center" >
             <h1 class="center">用户注册</h1>
 			<div>
-				<form method="post" action="/user/register/">
+				<form method="post" action="/register/">
            {% csrf_token %}
 				<ul style="list-style-type: none;" > <!--去掉实心点-->
 					<li>
@@ -38,7 +38,7 @@
 					</li>
 					<li >
 						<input type="submit" value="注 册" name="">
-				        <a href="login">登录</a>
+				        <a href="../login/">登录</a>
 					</li>
 				</ul>
 				</form>

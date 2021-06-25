@@ -72,7 +72,7 @@ class LoginView(View):
       user = User2.objects.get(username=username)
     except:
       return render(request, 'login.html', {'errmsg': '用户或密码错误'})
-    #判断用户密码是否正确
+    # 判断用户密码是否正确
     try:
       psw = User2.objects.get(username=username,password=password)
     except:

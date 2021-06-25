@@ -7,4 +7,5 @@ urlpatterns = [
     path(r'list/<page>/', views.ListView.as_view(), name='list'),  # 商品列表
     path(r'collect/<good_id>/', views.CollectView.as_view(), name='collect'),  # 商品收藏
     path(r'collect_list', views.Collect_listView.as_view(), name='collect_list'),  # 收藏列表页
+    path(r'collect_list/<good_id>', views.Collect_list_deleteView.as_view(), name='collect_list_delete'),  # 收藏列表页
 ]+static(settings.STATIC_URL,document_root=settings.STATICFILES_DIRS)

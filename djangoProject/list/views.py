@@ -51,10 +51,6 @@ class ListView(View):
         if page > paginator.num_pages:
             page = 1
 
-        # 获取第page页的Page实例对象
-        good_page = paginator.page(page)
-
-
         # todo: 进行页码的控制，页面上最多显示5个页码
         # 1.总页数小于5页，页面上显示所有页码
         # 2.如果当前页是前3页，显示1-5页
@@ -69,6 +65,9 @@ class ListView(View):
             pages = range(num_pages-4, num_pages+1)
         else:
             pages = range(page-2, page+3)
+
+        # 获取第page页的Page实例对象
+        good_page = paginator.page(page)
 
         context_data = {
             'uid': uid,
@@ -87,17 +86,20 @@ class CollectView(View):
         if not uid:
             return redirect('user:login')
 
-
-        #外键需要实例化
-        # try :
-        #     a=Collect.objects.get(save_id=good_id)
-        #     print(a)
-        #     return HttpResponse('你已经存过了')
-        # except:
+        # #判断收藏表里是否有改收藏
+        # collect = Collect.objects.get(save_id=good_id)
+        # if collect:
+        #     return HttpResponse('你已经收藏')
+        # else:
         one_link = Goods.objects.get(good_id=good_id)
         Collect.objects.create(username=uid, save_id_id=one_link.good_id)
 
         return redirect('list:collect_list')
+
+        # one_link = Goods.objects.get(good_id=good_id)
+        # Collect.objects.create(username=uid, save_id_id=one_link.good_id)
+        #
+        # return redirect('list:collect_list')
 
 
 #收藏页
@@ -131,20 +133,35 @@ class Collect_listView(View):
         # # print(save)
         #查了good_id的列表
         good_id_list = Collect.objects.filter(username=uid).values_list('save_id', flat=True)
-        print(good_id_list)
-        good_list=[]
-        for i in good_id_list:
-            a=Goods.objects.filter(good_id=i).first
+
+        good_list = []
+        for good_id in good_id_list:
+            a= Goods.objects.filter(good_id=good_id).first()
             good_list.append(a)
 
         # Goods.objects.filter()
         context_data = {
+            'good_list': good_list
 
         }
 
+        return render(request, 'collect_list.html', context_data)
 
 
-        return render(request, 'collect_list.html',locals())
+#删除收藏
+class Collect_list_deleteView(View):
+    def get(self, request, good_id):
+
+        uid = request.session.get('uid')
+        if not uid:
+            return redirect('user:login')
+
+        one_link = Goods.objects.get(good_id=good_id)
+        Collect.objects.filter(username=uid, save_id_id=one_link.good_id).delete()
+
+        return redirect('list:collect_list')
+
+
 
 
 

@@ -10,8 +10,8 @@
             <li><a href="#">{{ uid }}</a></li>
             <li><a href="{% url 'user:logout' %}">logout</a></li>
         {% else %}
-            <li><a href="/user/register/">register</a></li>
-            <li><a href="/user/login/">login</a></li>
+            <li><a href="{% url 'user:register' %}">register</a></li>
+            <li><a href="{% url 'user:login' %}">login</a></li>
         {% endif %}
     </div>
 
@@ -32,7 +32,7 @@
                 <td>{{ foo.good_introduce }}</td>
                 <td>{{ foo.good_price }}</td>
                 <td>{{ foo.good_num}}</td>
-                <td><img src = "../../../{{ foo.good_picture }}" alt="" style="height: 60px;width: 60px"></td>
+                <td><img src = "{{ foo.good_picture.url }}" alt="" style="height: 60px;width: 60px"></td>
                 <td><a href="/list/collect/{{ foo.good_id }}">收藏</a></td>
                 </tr>
             {% endfor %}

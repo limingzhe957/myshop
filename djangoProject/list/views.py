@@ -54,7 +54,7 @@ class ListView(View):
         # 获取第page页的Page实例对象
         good_page = paginator.page(page)
 
-11
+
         # todo: 进行页码的控制，页面上最多显示5个页码
         # 1.总页数小于5页，页面上显示所有页码
         # 2.如果当前页是前3页，显示1-5页

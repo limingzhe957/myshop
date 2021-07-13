@@ -12,7 +12,14 @@
     商品价格：<input type="number" name="price"/></br>
     商品数量：<input type="number" name="num"/></br>
     商品图片：<input type="file" name="img"/></br>
-    <input type="submit" value="提交" name=""></br>
+    <label>商品种类：
+        <select name="product_class">
+            {% for name in product_class %}
+            <option id="{{name.product_class_name}}" value="{{ name.product_class_name }}">{{ name.product_class_name }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <br><input type="submit" value="提交" name=""></br>
 </form>
 
 

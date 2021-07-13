@@ -26,14 +26,17 @@
                 <td>商品图片</td>
                 <td></td>
                 </tr>
-            {% for foo in good_page %}
+            {% for foo in product_page %}
                 <tr>
-                <td>{{ foo.good_name }}</td>
-                <td>{{ foo.good_introduce }}</td>
-                <td>{{ foo.good_price }}</td>
-                <td>{{ foo.good_num}}</td>
-                <td><img src = "{{ foo.good_picture.url }}" alt="" style="height: 60px;width: 60px"></td>
-                <td><a href="/list/collect/{{ foo.good_id }}">收藏</a></td>
+
+                <td>{{ foo.product_name }}</td>
+                <td>{{ foo.product_introduce }}</td>
+
+
+                <td>{{ foo.product_price }}</td>
+                <td>{{ foo.product_num}}</td>
+                <td><img src = "{{ foo.product_picture.url }}" alt="" style="height: 60px;width: 60px"></td>
+                <td><a href="/list/collect/{{ foo.product_id }}">收藏</a></td>
                 </tr>
             {% endfor %}
         </table>
@@ -41,18 +44,18 @@
 
 
         <div class="pagenation">
-            {% if good_page.has_previous %}
-            <a href="{% url 'list:list'  good_page.previous_page_number %}">上一页</a>
+            {% if product_page.has_previous %}
+            <a href="{% url 'list:list'  product_page.previous_page_number %}">上一页</a>
             {% endif %}
             {% for pindex in pages %}
-                {% if pindex == good_page.number %}
+                {% if pindex == product_page.number %}
                     <a href="{% url 'list:list'  pindex %}" class="active">{{ pindex }}</a>
                 {% else %}
                     <a href="{% url 'list:list'  pindex %}">{{ pindex }}</a>
                 {% endif %}
             {% endfor %}
-            {% if good_page.has_next %}
-            <a href="{% url 'list:list' good_page.next_page_number %}">下一页></a>
+            {% if product_page.has_next %}
+            <a href="{% url 'list:list' product_page.next_page_number %}">下一页></a>
             {% endif %}
         </div>
        </div>

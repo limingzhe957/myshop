@@ -1,46 +1,67 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.views import View
-from user.models import Goods, Collect
+from user.models import Collect, Product, ProductClass
 from django.core.paginator import Paginator
 from util.mixin import LoginRequiredMixin
 # Create your views here.
 
-#商品添加
+
+# 商品种类添加
+class AddClassView(View):
+    def get(self, request):
+        return render(request, 'add_class.html')
+
+    def post(self, request):
+        classname = request.POST.get('classname')
+        print(classname)
+        try:
+            ProductClass.objects.get(product_class_name=classname)
+            return render(request, 'add_class.html', {'errmsg': '该类别已存在'})
+        except:
+            ProductClass.objects.create(product_class_name=classname)
+            return render(request, 'add_class.html', {'errmsg': '添加成功'})
+
+
+# 商品添加
 class AddView(View):
     """添加功能"""
-    def get(self,request):
+    def get(self, request):
         '''页面显示'''
-        return render(request,'add_shangpin.html')
-    def post(self,request):
-        #接收数据
-        good_name = request.POST.get('name')
-        good_introduce = request.POST.get('introduce')
-        good_num = request.POST.get('num')
-        good_price = request.POST.get('price')
-        good_picture = request.FILES.get('img')
+        product_class = ProductClass.objects.all()
+        context = {'product_class': product_class}
+        return render(request, 'add_shangpin.html', context)
 
+    def post(self, request):
+        # 接收数据
+        product_name = request.POST.get('name')
+        product_introduce = request.POST.get('introduce')
+        product_num = request.POST.get('num')
+        product_price = request.POST.get('price')
+        product_picture = request.FILES.get('img')
+        product_class = request.POST.get('product_class')
 
-        #处理数据
+        # 处理数据
         # 判断数据是否全
-        if not all([good_name, good_introduce, good_num, good_price, good_picture]):
+        if not all([product_name, product_introduce, product_num, product_price, product_picture, product_class]):
             return render(request, 'add_shangpin.html', {'errmsg': '数据不完整'})
 
-        #存入数据库
-        Goods.objects.create(good_name=good_name, good_introduce=good_introduce, good_num=good_num,
-                             good_price=good_price, good_picture=good_picture)
+        product_class = ProductClass.objects.get(product_class_name=product_class)
+        # 存入数据库
+        Product.objects.create(product_name=product_name, product_introduce=product_introduce, product_num=product_num,
+                             product_price=product_price, product_picture=product_picture, product_class=product_class)
 
         return HttpResponse('存入成功')
 
 
-#商品列表页 /list/list/page
+# 商品列表页 /list/list/page
 class ListView(View):
-    def get(self, request, page):
 
+    def get(self, request, page):
         uid = request.session.get('uid')
-        GOOD = Goods.objects.all()
+        Products = Product.objects.all()
 
         # 生成paginator对象,定义每页显示1条记录
-        paginator = Paginator(GOOD, 1)
+        paginator = Paginator(Products, 1)
 
         # 获取第page页的内容
         try:
@@ -67,18 +88,18 @@ class ListView(View):
             pages = range(page-2, page+3)
 
         # 获取第page页的Page实例对象
-        good_page = paginator.page(page)
+        product_page = paginator.page(page)
 
         context_data = {
             'uid': uid,
-            'good_page': good_page,
+            'product_page': product_page,
             'pages': pages
         }
 
         return render(request, 'list.html', context_data)
 
 
-#收藏
+# 收藏
 class CollectView(View):
     def get(self, request, good_id):
 
@@ -91,19 +112,19 @@ class CollectView(View):
         # if collect:
         #     return HttpResponse('你已经收藏')
         # else:
-        one_link = Goods.objects.get(good_id=good_id)
+        one_link = Product.objects.get(good_id=good_id)
         Collect.objects.create(username=uid, save_id_id=one_link.good_id)
 
         return redirect('list:collect_list')
-
         # one_link = Goods.objects.get(good_id=good_id)
         # Collect.objects.create(username=uid, save_id_id=one_link.good_id)
         #
         # return redirect('list:collect_list')
 
 
-#收藏页
+# 收藏页
 class Collect_listView(View):
+
     def get(self, request):
         uid = request.session.get('uid')
         # print(uid)
@@ -115,9 +136,6 @@ class Collect_listView(View):
         # select * from Goods where (good_id = select good_id from collect where username= uid )
         # save2 = Collect.objects.get(username=uid)
         # Goods.objects.filter()
-
-
-
         # list= []
         # list1=[]
         # dict= {}
@@ -131,12 +149,12 @@ class Collect_listView(View):
         # # print(list1)
         # #
         # # print(save)
-        #查了good_id的列表
+        # 查了good_id的列表
         good_id_list = Collect.objects.filter(username=uid).values_list('save_id', flat=True)
 
         good_list = []
         for good_id in good_id_list:
-            a= Goods.objects.filter(good_id=good_id).first()
+            a = Product.objects.filter(good_id=good_id).first()
             good_list.append(a)
 
         # Goods.objects.filter()
@@ -148,15 +166,16 @@ class Collect_listView(View):
         return render(request, 'collect_list.html', context_data)
 
 
-#删除收藏
+# 删除收藏
 class Collect_list_deleteView(View):
+
     def get(self, request, good_id):
 
         uid = request.session.get('uid')
         if not uid:
             return redirect('user:login')
 
-        one_link = Goods.objects.get(good_id=good_id)
+        one_link = Product.objects.get(good_id=good_id)
         Collect.objects.filter(username=uid, save_id_id=one_link.good_id).delete()
 
         return redirect('list:collect_list')

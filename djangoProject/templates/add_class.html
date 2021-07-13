@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加商品种类</title>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <br>商品种类：<input type="text" name="classname"/></br>
+        <input type="submit" value="提交" name="">
+
+    </form>
+    {{ errmsg }}
+
+</body>
+</html>

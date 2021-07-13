@@ -3,5 +3,6 @@ from user import views
 urlpatterns = [
     path(r'login/', views.LoginView.as_view(), name='login'),  # 登录
     path(r'register/', views.RegisterView.as_view(), name='register'),  # 注册
-    path(r'logout/', views.LogoutView.as_view(), name='logout'),  # 注册
+    path(r'logout/', views.LogoutView.as_view(), name='logout'),  # 登出
+    path(r'form/', views.FormExa.as_view(), name='form'),
 ]
